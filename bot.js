@@ -1,118 +1,116 @@
 const Discord = require('discord.js')
-
 const fs = require('fs');
-
 const clinet = new Discord.Client({disableEveryone: true, maxMessagesCache: 1});
 
-const config = require('./Configuration.json');
-
-const tpoints = JSON.parse(fs.readFileSync('./Text.json', 'UTF8'));
-
-const vpoints = JSON.parse(fs.readFileSync('./Voice.json', 'UTF8'));
-
-clinet.config = config;
 
 
-clinet.on('ready',async => {
-
-  console.log(`.Codes TOP.`);
-
-  clinet.users.forEach(m => {
-
-    if(m.bot) return;
-
-    if(!tpoints[m.id]) tpoints[m.id] = {points: 0, id: m.id};
-
-    fs.writeFileSync("./Text.json", JSON.stringify(tpoints, null, 2));
-
-    if(!vpoints[m.id]) vpoints[m.id] = {points: 0, id: m.id};
-
-    fs.writeFileSync("./Voice.json", JSON.stringify(vpoints, null, 2));
-
-  });
-
-});
-
-clinet.on('message', message => {
-
-  if(message.author.bot || message.channel.type === 'dm') return;
-
-  let args = message.content.split(' ');
-
-  let member = message.member;
-
-  let mention = message.mentions.users.first();
-
-  let guild = message.guild;
-
-  let author = message.author;
-
-  let rPoints = Math.floor(Math.random() * 4) + 1;// Random Points
-
-  tpoints[author.id].points += rPoints;
-
-  fs.writeFileSync("./Text.json", JSON.stringify(tpoints, null, 2));
-
-  if(args[0] === `${hero.config.prefix}top`) {
-
-    let _voicePointer = 1;
-
-    let _textPointer = 1;
-
-    let _voiceArray = Object.values(vpoints);
-
-    let _textArray = Object.values(tpoints);
-
-    let _topText = _textArray.slice(0, 5).map(r => `**\`.${_textPointer++}\` | <@${r.id}> \`XP: ${r.points}\`**`).sort((a, b) => a > b).join('\n');
-
-    let _voiceText = _voiceArray.slice(0, 5).map(r => `**\`.${_voicePointer++}\` | <@${r.id}> \`XP: ${r.points}\`**`).sort((a, b) => a > b).join('\n');
-
-    let topRoyale = new Discord.RichEmbed();
-
-    topRoyale.setTitle(' \ðŸ“‹Guild Score Leaderboards');
-
-    topRoyale.addField(`**TOP 5 TEXT ðŸ’¬**`, _topText, true);
-
-    topRoyale.addField(`**TOP 5 VOICE ðŸŽ™**`, _voiceText, true);
-
-    topRoyale.setFooter(message.author.username, message.author.avatarURL, message.author.tag);
-
-    topRoyale.setColor("GREEN");
-
-    message.channel.send(topRoyale).catch(e => {
-
-      if(e) return message.channel.send(`**. Error; \`${e.message}\`**`);
-
+const pics = JSON.parse(fs.readFileSync('./pics.json' , 'utf8'));
+ client.on('message', message => {
+         if (!message.channel.guild) return;
+ 
+  let room = message.content.split(" ").slice(1);
+  let findroom = message.guild.channels.find('name', `${room}`)
+  if(message.content.startsWith(prefix + "setMedia")) {
+      if(!message.channel.guild) return message.reply('**This Command Only For Servers**');
+      if(!message.member.hasPermission('MANAGE_GUILD')) return message.channel.send('**Sorry But You Dont Have Permission** `MANAGE_GUILD`' );
+      if(!room) return message.channel.send('Please Type The Channel Name')
+      if(!findroom) return message.channel.send('Cant Find This Channel')
+      let embed = new Discord.RichEmbed()
+      .setTitle('**Done The MediaOnly Code Has Been Setup**')
+      .addField('Channel:', `${room}`)
+      .addField('Requested By', `${message.author}`)
+      .setThumbnail(message.author.avatarURL)
+      .setFooter(`${client.user.username}`)
+      message.channel.sendEmbed(embed)
+      pics[message.guild.id] = {
+      channel: room,
+      onoff: 'On'
+      },
+      fs.writeFile("./pics.json", JSON.stringify(pics), (err) => {
+      if (err) console.error(err)
+     
+      })
+    }})
+       
+client.on('message', message => {
+ 
+  if(message.content.startsWith(prefix + "toggleMedia")) {
+          if (!message.channel.guild) return;
+ 
+      if(!message.channel.guild) return message.reply('**This Command Only For Servers**');
+      if(!message.member.hasPermission('MANAGE_GUILD')) return message.channel.send('**Sorry But You Dont Have Permission** `MANAGE_GUILD`' );
+      if(!pics[message.guild.id]) pics[message.guild.id] = {
+        onoff: 'Off'
+      }
+        if(pics[message.guild.id].onoff === 'Off') return [message.channel.send(`**The MediaCode Is __𝐎𝐍__ !**`), pics[message.guild.id].onoff = 'On']
+        if(pics[message.guild.id].onoff === 'On') return [message.channel.send(`**The MediaCode Is __𝐎𝐅𝐅__ !**`), pics[message.guild.id].onoff = 'Off']
+        fs.writeFile("./pics.json", JSON.stringify(pics), (err) => {
+          if (err) console.error(err)
+         
+          })
+        }
+       
+      })
+     
+             client.on('message', message => {
+                       if (!message.channel.guild) return;
+  if(message.author.bot) return;
+ 
+        if(!pics[message.guild.id]) pics[message.guild.id] = {
+        onoff: 'Off'
+      }
+        if(pics[message.guild.id].onoff === 'Off') return;
+ 
+  if(message.channel.name !== `${pics[message.guild.id].channel}`) return;
+ 
+   let types = [
+    'jpg',
+    'jpeg',
+    'png',
+    'http://prntscr.com/'
+  ]
+   if (message.attachments.size <= 0) {
+    message.delete();
+    message.channel.send(`${message.author}, This Channel For Media 🖼️ Only !`)
+    .then(msg => {
+      setTimeout(() => {
+        msg.delete();
+      }, 5000)
+  })
+  return;
+}
+   if(message.attachments.size >= 1) {
+    let filename = message.attachments.first().filename
+    console.log(filename);
+    if(!types.some( type => filename.endsWith(type) )) {
+      message.delete();
+      message.channel.send(`${message.author},شات صور فقط !`)
+      .then(msg => {
+        setTimeout(() => {
+          msg.delete();
+        }, 5000)
+      })
+      .catch(err => {
+        console.error(err);
     });
-
+    }
   }
+ })
+client.on('message', message => {
+  if(message.content.startsWith(prefix + "infoMedia")) {
+let embed = new Discord.RichEmbed()
+.addField('Channel Status', `${pics[message.guild.id].onoff}`)
+.addField('Media Channel', `${pics[message.guild.id].channel}`)
+.addField('Requested By', `${message.author}`)
+.setThumbnail(message.author.avatarURL)
+.setFooter(`${client.user.username}`)
+message.channel.sendEmbed(embed)
+  }})
 
-});
+  
 
-client.on('voiceStateUpdate', (u, member) => {
-
-  let author = member.user.id;
-
-  let guild = member.guild;
-
-  if(member.voiceChannel === null) return;
-
-  let rPoints = Math.floor(Math.random() * 4) + 1;// Random Points
-
-  setInterval(() => {
-
-    if(!member.voiceChannel) return;
-
-    if(member.selfDeafen) return;
-
-    vpoints[author].points += rPoints;
-
-    fs.writeFileSync("./Voice.json", JSON.stringify(vpoints, null, 2));
-
-  }, 5000); // 5 Secs
-
-});
-
+  
+    
 
 
 
