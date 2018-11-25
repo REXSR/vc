@@ -12,7 +12,6 @@ const vpoints = JSON.parse(fs.readFileSync('./Voice.json', 'UTF8'));
 
 clinet.config = config;
 
-clinet.login(client.config.token);
 
 clinet.on('ready',async => {
 
