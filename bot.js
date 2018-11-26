@@ -1,7 +1,6 @@
 const Discord = require('discord.js')
 const fs = require('fs');
-const clinet = new Discord.Client({disableEveryone: true, maxMessagesCache: 1});
-
+const client = new Discord.Client();      
 
 
 const pics = JSON.parse(fs.readFileSync('./pics.json' , 'utf8'));
