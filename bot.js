@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const fs = require('fs');
+const prefix = '!';
 const hero = new Discord.Client({disableEveryone: true, maxMessagesCache: 1});
 const config = require('./Configuration.json');
 const tpoints = JSON.parse(fs.readFileSync('./Text.json', 'UTF8'));
@@ -39,7 +40,7 @@ hero.on('message',async message => {
  
     let topRoyale = new Discord.RichEmbed();
     topRoyale.setAuthor(message.author.username, message.author.avatarURL);
-    topRoyale.setTitle('# " Top');
+    topRoyale.setTitle('!" Top');
     //topRoyale.setThumbnail(message.guild.iconURL);
     topRoyale.addField(`**TOP 5 TEXT 💬**`, _topText, true);
     topRoyale.addField(`**TOP 5 VOICE 🎙**`, _voiceText, true);
