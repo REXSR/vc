@@ -30,7 +30,7 @@ hero.on('message',async message => {
   let rPoints = Math.floor(Math.random() * 4) + 1;// Random Points
   tpoints[author.id].points += rPoints;
   fs.writeFileSync("./Text.json", JSON.stringify(tpoints, null, 2));
-  if(args[0] === `${hero.config.prefix}top`) {
+  if(args[0] === `!top`) {
     let _voicePointer = 1;
     let _textPointer = 1;
     let _voiceArray = Object.values(vpoints);
@@ -64,6 +64,26 @@ hero.on('voiceStateUpdate', (u, member) => {
   }, 5000); // 5 Secs
 });
 
+
+
+client.on("message", message => {
+  var prefix = '';
+              var args = message.content.substring(prefix.length).split(" ");
+              if (message.content.startsWith(prefix + "مسح")) {
+                  if(!message.channel.guild) return          
+     if(!message.member.hasPermission('MANAGE_MESSAGES')) return 
+          var msg;
+          msg = parseInt();
+        
+        message.channel.fetchMessages({limit: msg}).then(messages => message.channel.bulkDelete(messages)).catch(console.error);
+        message.channel.sendMessage("", {embed: {
+            
+          }
+        }}).then(msg => {msg.delete(3000)});
+                            }
+  
+       
+  });
 
 
 
