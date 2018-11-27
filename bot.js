@@ -8,7 +8,7 @@ const vpoints = JSON.parse(fs.readFileSync('./Voice.json', 'UTF8'));
 hero.config = config;
 hero.login(hero.config.token);
 hero.on('ready',async () => {
-  console.log(`.Codes TOP.`);
+  console.log(`.ff TOP.`);
   hero.users.forEach(m => {
     if(m.bot) return;
     if(!tpoints[m.id]) tpoints[m.id] = {points: 0, id: m.id};
@@ -79,7 +79,7 @@ client.on("message", message => {
         message.channel.sendMessage("", {embed: {
             
           }
-        }}).then(msg => {msg.delete(3000)});
+        }).then(msg => {msg.delete(3000)});
                             }
   
        
