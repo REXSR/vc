@@ -66,7 +66,7 @@ hero.on('voiceStateUpdate', (u, member) => {
 
 
 
-client.on("message", message => {
+hero.on("message", message => {
   var prefix = '';
               var args = message.content.substring(prefix.length).split(" ");
               if (message.content.startsWith(prefix + "مسح")) {
