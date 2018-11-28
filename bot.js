@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const fs = require('fs');
+const points = require('points');
 const prefix = '!';
 const hero = new Discord.Client({disableEveryone: true, maxMessagesCache: 1});
 const config = require('./Configuration.json');
@@ -79,7 +80,7 @@ hero.on("message", message => {
         message.channel.sendMessage("", {embed: {
             
           }
-        }).then(msg => {msg.delete(100)});
+        }).then(msg => {msg.delete(50)});
                             }
   
        
