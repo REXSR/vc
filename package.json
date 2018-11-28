@@ -23,7 +23,9 @@
     "config.json": "0.0.4",
     
     "dateformat": "^3.0.3",
-
+    
+    "points": "3.1.0",
+    
     "discord.js": "^11.3.2",
 
     "file-system": "^2.2.2",
